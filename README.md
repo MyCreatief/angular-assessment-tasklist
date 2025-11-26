@@ -81,4 +81,3 @@ Deze documentatie is bewust in het Nederlands geschreven omdat de opdracht en de
 - Toegankelijkheid verwerken (contrast, aria, semantiek)
 - Unit tests schrijven voor service, componenten en zoeklogica
 - Documentatie bijwerken
-
