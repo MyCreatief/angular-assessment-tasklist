@@ -1,0 +1,63 @@
+# ============================
+# Angular / Node
+# ============================
+node_modules/
+dist/
+build/
+tmp/
+cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+src/environments/*.local.ts
+
+# Angular cache
+.angular/
+
+# ============================
+# JetBrains / IntelliJ / WebStorm
+# ============================
+.idea/
+*.iml
+
+# User-specific files
+*.iws
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# AWS / Google plugin files
+.idea/**/aws.xml
+.idea/**/google-cloud.xml
+
+# Other JetBrains junk
+.idea/**/libraries
+.idea/httpRequests/
+
+# ============================
+# OS files
+# ============================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ============================
+# Logs
+# ============================
+*.log
+
+# ============================
+# Optional: Test output
+# (werkt voor zowel Jest als Vitest)
+# ============================
+coverage/
+test-output/
