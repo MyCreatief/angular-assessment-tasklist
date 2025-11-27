@@ -1,5 +1,15 @@
 # Angular Assessment Tasklist
 
+## Technische informatie
+
+Installeer eerst de dependencies met `npm install`.
+
+Start daarna de applicatie met `ng serve`. De applicatie draait op http://localhost:4200 en vernieuwt automatisch bij wijzigingen.
+
+Met `ng build` maak je een productieversie. De bestanden komen in de map dist.
+
+Unit tests worden uitgevoerd met Vitest. Gebruik hiervoor `npm run test`.
+
 ## Voor we beginnen
 
 Voor een nieuwe opdracht start neem ik eerst even de tijd om vooruit te kijken, net zoals bij klimmen. Je staat onderaan de muur, voelt de energie om omhoog te gaan en kijkt naar de route die het meest logisch voelt. Niet door snel te beginnen, maar door eerst te spotten waar mogelijke knelpunten zitten. Door die vooraf te zien kun je ze aanpakken of kleiner maken voordat ze echte problemen worden. Dat geeft rust en zorgt ervoor dat de eerste stap stevig staat.
@@ -82,30 +92,40 @@ Deze documentatie is bewust in het Nederlands geschreven omdat de opdracht en de
 - Unit tests schrijven voor service, componenten en zoeklogica
 - Documentatie bijwerken
 
-# AngularAssessmentTasklist
+---
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
+## Update 1: keuze voor Vitest
 
-## Development server
+Overgestapt van Karma en Jasmine naar Vitest. Angular zeventien werkt standaard met Vitest en dat maakt het testen sneller en duidelijker. Geen browser meer nodig en een lichtere opzet.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Ervaring met Jest maakte de overstap makkelijk. Vitest sluit goed aan op hoe Angular nu werkt en houdt het project overzichtelijk. Daarom is de Karma tooling verwijderd.
 
-## Code scaffolding
+### Belangrijk
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+De dependency checker geeft een melding voor een bekende kwetsbaarheid in Angular 17.3.0 binnen de HttpClient module. Deze kwetsbaarheid speelt alleen bij het gebruik van protocol relative URLs en XSRF tokens. Dit project gebruikt deze onderdelen niet, waardoor het risico niet van toepassing is.
 
-## Build
+Angular heeft dit in latere releases opgelost. Omdat dit project vaste versies gebruikt voor stabiliteit binnen de assessment blijft 17.3.0 hier staan. In een productieomgeving zou deze dependency worden bijgewerkt naar de meest recente veilige release.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+De dependency checker waarschuwt ook voor Vitest 1.6.0. Deze kwetsbaarheid geldt alleen wanneer de Vitest API server actief is en er tegelijk een kwaadaardige website wordt bezocht. Dit project gebruikt de API server niet en draait tests uitsluitend lokaal via de CLI. Het risico is daarom niet van toepassing.
 
-## Running unit tests
+Vitest heeft dit in latere versies opgelost. Voor deze opdracht blijft versie 1.6.0 staan om de stabiliteit van de huidige testconfiguratie te behouden. In een productieomgeving zou dit worden bijgewerkt naar een veilige release.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Update 2: Start van de implementatie
 
-## Running end-to-end tests
+De technische basis staat. Het project draait stabiel met linting, formatting en Vitest als testrunner. De tooling en kwaliteit zijn nu ingericht zoals ik dat normaal ook zou doen in een professioneel project. Vanaf dit moment start de daadwerkelijke implementatie van de takenlijst.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Ik gebruik GitHub Issues om de werkzaamheden op te knippen in kleine, overzichtelijke stappen. De planning in dit document vormt daarbij de leidraad. Elke stap krijgt een eigen issue zodat de voortgang goed te volgen blijft en alle keuzes transparant zijn.
 
-## Further help
+Normaal werk ik met Jira. Daar koppel ik taken direct aan mijn branches en loopt de workflow automatisch mee. Voor deze opdracht kies ik ervoor om de issues binnen GitHub zelf te gebruiken. Het is nieuw voor mij om hiermee te werken, maar het past goed bij de omvang van dit project en het is leuk om het op deze manier te doen.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Deze update volgt na het mergen van de initiele branch feature/angular-init, waarin de projectbasis, tooling en kwaliteitscontroles zijn ingericht. Vanaf dit punt begin ik met het creëren van issues en het implementeren van de functionele onderdelen van de applicatie.
+
+## Update 3: basis projectstructuur aangelegd
+
+Ik heb de eerste indeling van het project neergezet. De structuur is bewust rustig en herkenbaar gehouden zodat alles overzichtelijk blijft tijdens het bouwen.
+
+- **core** – voor models en services
+- **shared** – voor herbruikbare componenten
+- **tasks** – voor alle onderdelen die met taken te maken hebben
+
+Deze indeling past goed bij de schaal van dit project en vormt een helder vertrekpunt voor de volgende stappen.
