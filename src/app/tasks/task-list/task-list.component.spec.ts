@@ -1,11 +1,46 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { signal, runInInjectionContext, createEnvironmentInjector } from '@angular/core';
+import { TaskListComponent } from './task-list.component';
+import { TaskService } from '../../core/task.service';
+import { Task } from '../../core/models/task.model';
 
-/**
- * This placeholder test exists so the test file is valid.
- * Real tests will be added when the component logic is implemented.
- */
-describe('Component skeleton test', () => {
-  it('should run a basic test', () => {
-    expect(true).toBe(true);
+class MockTaskService {
+  tasks = signal<Task[]>([
+    {
+      id: '1',
+      title: 'Test task',
+      description: 'desc',
+      done: false,
+      createdAt: new Date(),
+    },
+  ]);
+}
+
+describe('TaskListComponent', () => {
+  let mockService: MockTaskService;
+  let injector: ReturnType<typeof createEnvironmentInjector>;
+
+  beforeEach(() => {
+    mockService = new MockTaskService();
+
+    // Maak een Angular DI injector
+    injector = createEnvironmentInjector([{ provide: TaskService, useValue: mockService }]);
+  });
+
+  function createComponent() {
+    return runInInjectionContext(injector, () => new TaskListComponent());
+  }
+
+  it('should create', () => {
+    const component = createComponent();
+    expect(component).toBeTruthy();
+  });
+
+  it('should expose tasks from the service', () => {
+    const component = createComponent();
+    const tasks = component.tasks();
+
+    expect(tasks.length).toBe(1);
+    expect(tasks[0].title).toBe('Test task');
   });
 });
