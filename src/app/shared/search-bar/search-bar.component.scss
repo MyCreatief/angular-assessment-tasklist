@@ -1,0 +1,26 @@
+.search-bar {
+  width: 100%;
+  margin: 0 auto var(--space-lg);
+}
+
+.search-input {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-md);
+  border-radius: var(--radius-md);
+  border: var(--border-width) solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-soft);
+  transition: 0.15s ease;
+
+  &::placeholder {
+    color: var(--color-neutral-500);
+  }
+
+  &:focus {
+    border-color: var(--color-primary);
+    outline: none;
+    box-shadow: var(--shadow-medium);
+  }
+}

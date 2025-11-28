@@ -38,7 +38,7 @@ describe('TaskListComponent', () => {
 
   it('should expose tasks from the service', () => {
     const component = createComponent();
-    const tasks = component.tasks();
+    const tasks = component.taskList;
 
     expect(tasks.length).toBe(1);
     expect(tasks[0].title).toBe('Test task');

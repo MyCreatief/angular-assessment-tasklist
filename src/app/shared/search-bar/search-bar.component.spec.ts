@@ -1,11 +1,45 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { runInInjectionContext, createEnvironmentInjector } from '@angular/core';
+import { SearchBarComponent } from './search-bar.component';
 
-/**
- * This placeholder test exists so the test file is valid.
- * Real tests will be added when the component logic is implemented.
- */
-describe('Component skeleton test', () => {
-  it('should run a basic test', () => {
-    expect(true).toBe(true);
+describe('SearchBarComponent (signal-only unit test)', () => {
+  let injector: ReturnType<typeof createEnvironmentInjector>;
+
+  beforeEach(() => {
+    injector = createEnvironmentInjector([]);
+  });
+
+  function createComponent() {
+    return runInInjectionContext(injector, () => new SearchBarComponent());
+  }
+
+  it('should create', () => {
+    const component = createComponent();
+    expect(component).toBeTruthy();
+  });
+
+  it('should emit search term onInputChange', () => {
+    const component = createComponent();
+    const spy = vi.fn();
+
+    component.search.subscribe(spy);
+
+    // simulate typing
+    component.query.set('Angular');
+    component.onInputChange();
+
+    expect(spy).toHaveBeenCalledWith('Angular');
+  });
+
+  it('should trim whitespace before emitting', () => {
+    const component = createComponent();
+    const spy = vi.fn();
+
+    component.search.subscribe(spy);
+
+    component.query.set('   test   ');
+    component.onInputChange();
+
+    expect(spy).toHaveBeenCalledWith('test');
   });
 });
