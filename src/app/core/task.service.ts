@@ -11,8 +11,7 @@ export class TaskService {
 
   /**
    * Initialize service state.
-   * Called once from AppComponent or main.ts.
-   * Loads from storage or seeds data if wanted.
+   * Loads from storage or seeds data if needed.
    */
   init({ seed = true }: { seed?: boolean } = {}): void {
     const stored = localStorage.getItem(this.storageKey);
@@ -52,39 +51,53 @@ export class TaskService {
     }
   }
 
-  /** CRUD OPERATIONS **/
-  addTask(task: Task): void {
-    const updated = [...this._tasks(), task];
-    this._tasks.set(updated);
+  /** CREATE */
+  addTask(data: { title: string; description?: string }): void {
+    const newTask: Task = {
+      id: crypto.randomUUID(),
+      title: data.title,
+      description: data.description ?? '',
+      done: false,
+      createdAt: new Date(),
+    };
+
+    this._tasks.update((current) => [...current, newTask]);
     this.save();
   }
 
+  /** UPDATE */
   updateTask(id: string, updates: Partial<Task>): void {
     const updated = this._tasks().map((t) => (t.id === id ? { ...t, ...updates } : t));
     this._tasks.set(updated);
     this.save();
   }
 
+  /** DELETE */
   deleteTask(id: string): void {
     const updated = this._tasks().filter((t) => t.id !== id);
     this._tasks.set(updated);
     this.save();
   }
 
+  /** TOGGLE */
   toggleDone(id: string): void {
-    this.updateTask(id, { done: !this.getTask(id)?.done });
+    const current = this.getTask(id);
+    if (!current) return;
+
+    this.updateTask(id, { done: !current.done });
   }
 
+  /** READ */
   getTask(id: string): Task | null {
     return this._tasks().find((t) => t.id === id) ?? null;
   }
 
-  /** NEW: alias used by tests **/
+  /** Used by tests */
   getTaskById(id: string): Task | null {
     return this.getTask(id);
   }
 
-  /** NEW: fake API loader used in tests **/
+  /** Fake API loader (tests) */
   async loadFakeApiData(): Promise<void> {
     await new Promise((resolve) => setTimeout(resolve, 10));
 
