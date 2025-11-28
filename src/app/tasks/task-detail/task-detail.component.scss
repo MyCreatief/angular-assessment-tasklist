@@ -1,0 +1,51 @@
+.task-detail-page {
+  padding: var(--space-xl);
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+/* Back button */
+.back-btn {
+  display: inline-block;
+  margin-bottom: var(--space-lg);
+  font-size: var(--font-sm);
+  color: var(--color-primary);
+  text-decoration: underline;
+  transition: 0.2s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+/* Card styling consistent met task list items */
+.detail-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  border: var(--border-width) solid var(--color-border);
+  box-shadow: var(--shadow-soft);
+  padding: var(--space-xl);
+}
+
+/* Title */
+.detail-title {
+  font-size: var(--font-xxl);
+  font-family: var(--font-serif);
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
+}
+
+/* Description */
+.detail-desc {
+  font-size: var(--font-md);
+  line-height: var(--line-height-base);
+  color: var(--color-neutral-700);
+  margin-bottom: var(--space-lg);
+}
+
+/* Metadata */
+.detail-meta {
+  font-size: var(--font-sm);
+  color: var(--color-neutral-500);
+}
