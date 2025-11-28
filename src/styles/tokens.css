@@ -1,0 +1,67 @@
+:root {
+  /* =======================================
+     SPACING — 4px scale
+     ======================================= */
+  --space-xxs: 0.25rem; /* 4px */
+  --space-xs: 0.5rem;   /* 8px */
+  --space-sm: 0.75rem;  /* 12px */
+  --space-md: 1rem;     /* 16px */
+  --space-lg: 1.5rem;   /* 24px */
+  --space-xl: 2rem;     /* 32px */
+  --space-xxl: 3rem;    /* 48px */
+
+  /* =======================================
+     RADII — rem-based for accessibility
+     ======================================= */
+  --radius-sm: 0.25rem; /* 4px */
+  --radius-md: 0.5rem;  /* 8px */
+  --radius-lg: 0.75rem; /* 12px */
+
+  /* =======================================
+     COLORS — functional names (future-proof)
+     ======================================= */
+  --color-primary: #29524a;
+  --color-secondary: #94a187;
+  --color-accent: #e9bcb7;
+
+  --color-background: #f6f5f3;
+  --color-surface: #ffffff;
+  --color-border: #d6d2cc;
+  --color-text: #06070e;
+
+  --color-neutral-100: #ffffff;
+  --color-neutral-200: #f2f2f2;
+  --color-neutral-300: #e0dedb;
+  --color-neutral-400: #b8b6b3;
+  --color-neutral-500: #7d7c7a;
+  --color-neutral-600: #3d3d3b;
+
+  /* =======================================
+     FONT families
+     ======================================= */
+  --font-sans: "Source Sans 3", sans-serif;
+  --font-serif: "Playfair Display", serif;
+
+  /* =======================================
+     FONT sizes
+     ======================================= */
+  --font-xs: 0.75rem;
+  --font-sm: 0.875rem;
+  --font-md: 1rem;
+  --font-lg: 1.25rem;
+  --font-xl: 1.5rem;
+  --font-xxl: 2rem;
+
+  --line-height-base: 1.55;
+
+  /* =======================================
+     SHADOWS — rem-based
+     ======================================= */
+  --shadow-soft: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.08);
+  --shadow-medium: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.12);
+
+  /* =======================================
+     BORDERS
+     ======================================= */
+  --border-width: 0.0625rem; /* 1px */
+}

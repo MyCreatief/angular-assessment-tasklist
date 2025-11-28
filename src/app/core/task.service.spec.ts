@@ -9,6 +9,8 @@ import { Task } from './models/task.model';
  */
 describe('TaskService', () => {
   let service: TaskService;
+
+  // Strongly typed mock object for localStorage
   let mockStorage: {
     getItem: ReturnType<typeof vi.fn>;
     setItem: ReturnType<typeof vi.fn>;
@@ -158,7 +160,8 @@ describe('TaskService', () => {
     await service.loadFakeApiData();
 
     const tasks = service.tasks();
-    expect(tasks).toHaveLength(1);
-    expect(tasks[0].title).toBe('Example task');
+    expect(tasks).toHaveLength(2);
+    expect(tasks[0].title).toBe('Fake API taak 1');
+    expect(tasks[1].title).toBe('Fake API taak 2');
   });
 });

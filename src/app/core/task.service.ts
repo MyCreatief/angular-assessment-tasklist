@@ -1,135 +1,116 @@
 import { Injectable, signal } from '@angular/core';
 import { Task } from './models/task.model';
 
-/**
- * This service is available everywhere in the project.
- * You do not need to import it manually.
- */
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class TaskService {
-  /**
-   * storageKey contains the name used to save all tasks in localStorage.
-   */
   private readonly storageKey = 'tasks';
+  private readonly _tasks = signal<Task[]>([]);
 
-  /**
-   * _tasks holds the full list of tasks as a signal.
-   * The first value is loaded from localStorage.
-   */
-  private readonly _tasks = signal<Task[]>(this.loadFromStorage());
-
-  /**
-   * tasks exposes the list of tasks as a read-only signal.
-   * Components can read the value but cannot change it.
-   */
+  // expose read-only
   tasks = this._tasks.asReadonly();
 
-  constructor() {
-    // we cant be empty
-  }
-
   /**
-   * loadFromStorage reads stored tasks from localStorage.
-   * Date values are turned into Date objects again.
+   * Initialize service state.
+   * Called once from AppComponent or main.ts.
+   * Loads from storage or seeds data if wanted.
    */
-  private loadFromStorage(): Task[] {
-    const raw = localStorage.getItem(this.storageKey);
-    if (!raw) return [];
+  init({ seed = true }: { seed?: boolean } = {}): void {
+    const stored = localStorage.getItem(this.storageKey);
 
-    try {
-      const parsed = JSON.parse(raw);
+    if (stored) {
+      this._tasks.set(JSON.parse(stored));
+      return;
+    }
 
-      // Convert stored date strings into real Date objects
-      return parsed.map((rawTask: Task) => ({
-        ...rawTask,
-        createdAt: new Date(rawTask.createdAt),
-      }));
-    } catch {
-      return [];
+    if (seed) {
+      const seedData: Task[] = [
+        {
+          id: crypto.randomUUID(),
+          title: 'Boodschappen doen',
+          description: 'Melk, kaas, eieren',
+          done: false,
+          createdAt: new Date(),
+        },
+        {
+          id: crypto.randomUUID(),
+          title: 'Angular assessment afronden',
+          description: 'Takenlijstcomponent en tests schrijven',
+          done: false,
+          createdAt: new Date(),
+        },
+        {
+          id: crypto.randomUUID(),
+          title: 'Met Belle wandelen',
+          description: 'Even een rondje naar buiten',
+          done: true,
+          createdAt: new Date(),
+        },
+      ];
+
+      this._tasks.set(seedData);
+      this.save();
     }
   }
 
-  /**
-   * saveToStorage writes the full task list into localStorage.
-   */
-  private saveToStorage(tasks: Task[]) {
-    localStorage.setItem(this.storageKey, JSON.stringify(tasks));
+  /** CRUD OPERATIONS **/
+  addTask(task: Task): void {
+    const updated = [...this._tasks(), task];
+    this._tasks.set(updated);
+    this.save();
   }
 
-  /**
-   * addTask adds a new task to the list and stores the updated version.
-   */
-  addTask(task: Task) {
-    const updatedTasks = [...this._tasks(), task];
-
-    this._tasks.set(updatedTasks);
-    this.saveToStorage(updatedTasks);
+  updateTask(id: string, updates: Partial<Task>): void {
+    const updated = this._tasks().map((t) => (t.id === id ? { ...t, ...updates } : t));
+    this._tasks.set(updated);
+    this.save();
   }
 
-  /**
-   * getTaskById returns one task by its id.
-   * Returns null when no task is found.
-   */
+  deleteTask(id: string): void {
+    const updated = this._tasks().filter((t) => t.id !== id);
+    this._tasks.set(updated);
+    this.save();
+  }
+
+  toggleDone(id: string): void {
+    this.updateTask(id, { done: !this.getTask(id)?.done });
+  }
+
+  getTask(id: string): Task | null {
+    return this._tasks().find((t) => t.id === id) ?? null;
+  }
+
+  /** NEW: alias used by tests **/
   getTaskById(id: string): Task | null {
-    return this._tasks().find(task => task.id === id) ?? null;
+    return this.getTask(id);
   }
 
-  /**
-   * updateTask changes values of an existing task.
-   * Only the fields given in updates are changed.
-   */
-  updateTask(id: string, updates: Partial<Task>) {
-    const updatedTasks = this._tasks().map(task =>
-      task.id === id ? { ...task, ...updates } : task
-    );
+  /** NEW: fake API loader used in tests **/
+  async loadFakeApiData(): Promise<void> {
+    await new Promise((resolve) => setTimeout(resolve, 10));
 
-    this._tasks.set(updatedTasks);
-    this.saveToStorage(updatedTasks);
+    const fakeTasks: Task[] = [
+      {
+        id: crypto.randomUUID(),
+        title: 'Fake API taak 1',
+        description: 'Geüpload van fake backend',
+        done: false,
+        createdAt: new Date(),
+      },
+      {
+        id: crypto.randomUUID(),
+        title: 'Fake API taak 2',
+        description: 'Tweede item uit fake backend',
+        done: true,
+        createdAt: new Date(),
+      },
+    ];
+
+    this._tasks.set(fakeTasks);
+    this.save();
   }
 
-  /**
-   * deleteTask removes a task from the list using its id.
-   */
-  deleteTask(id: string) {
-    const filteredTasks = this._tasks().filter(task => task.id !== id);
-
-    this._tasks.set(filteredTasks);
-    this.saveToStorage(filteredTasks);
-  }
-
-  /**
-   * toggleDone switches the done state of a task.
-   */
-  toggleDone(id: string) {
-    const currentTask = this.getTaskById(id);
-    if (!currentTask) return;
-
-    this.updateTask(id, { done: !currentTask.done });
-  }
-
-  /**
-   * loadFakeApiData creates one example task after a short delay.
-   * This simulates a real API.
-   */
-  loadFakeApiData(): Promise<void> {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const exampleTasks: Task[] = [
-          {
-            id: crypto.randomUUID(),
-            title: 'Example task',
-            description: 'This shows how a task looks',
-            done: false,
-            createdAt: new Date(),
-          },
-        ];
-
-        this._tasks.set(exampleTasks);
-        this.saveToStorage(exampleTasks);
-        resolve();
-      }, 600);
-    });
+  /** Storage */
+  private save(): void {
+    localStorage.setItem(this.storageKey, JSON.stringify(this._tasks()));
   }
 }
