@@ -1,1 +1,23 @@
-<p>task-list works!</p>
+<section class="task-list-page">
+  <header class="page-header">
+    <h1 class="page-title">Takenlijst</h1>
+
+    <a routerLink="/tasks/new" class="page-header__action"> Nieuwe taak </a>
+  </header>
+
+  <div class="task-list">
+    @for (task of tasks(); track task.id) {
+      <a class="task-item" [routerLink]="['/tasks', task.id]">
+        <div class="title">{{ task.title }}</div>
+
+        @if (task.description) {
+          <div class="desc">{{ task.description }}</div>
+        }
+
+        <div class="meta">
+          {{ task.createdAt | date: 'mediumDate' }}
+        </div>
+      </a>
+    }
+  </div>
+</section>
