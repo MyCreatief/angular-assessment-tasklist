@@ -1,1 +1,17 @@
-<p>task-detail works!</p>
+<section class="task-detail-page">
+  <a routerLink="/tasks" class="back-btn">← Terug naar lijst</a>
+
+  <div class="detail-card">
+    @if (task; as task) {
+      <h1 class="detail-title">{{ task.title }}</h1>
+
+      @if (task.description) {
+        <p class="detail-desc">{{ task.description }}</p>
+      }
+
+      <div class="detail-meta">Gemaakt op: {{ task.createdAt | date: 'mediumDate' }}</div>
+    } @else {
+      <p class="detail-desc">Taak niet gevonden.</p>
+    }
+  </div>
+</section>
