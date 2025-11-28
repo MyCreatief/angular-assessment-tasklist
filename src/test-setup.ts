@@ -1,8 +1,4 @@
 import '@testing-library/jest-dom';
-<<<<<<< HEAD
-=======
-import '@angular/compiler';
->>>>>>> origin/14-takenlijst-component-maken
 
 import {
   BrowserDynamicTestingModule,

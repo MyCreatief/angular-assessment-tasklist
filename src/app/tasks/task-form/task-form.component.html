@@ -1,1 +1,24 @@
-<p>task-form works!</p>
+<section class="task-form-page">
+  <h1 class="form-title">Nieuwe taak toevoegen</h1>
+
+  <div class="form-card">
+    <label class="form-label">Titel</label>
+    <input
+      class="form-input"
+      type="text"
+      [value]="title()"
+      (input)="title.set($any($event.target).value)"
+    />
+
+    <p class="error" *ngIf="showError()">Titel is verplicht</p>
+
+    <label class="form-label">Beschrijving</label>
+    <textarea
+      class="form-textarea"
+      [value]="description()"
+      (input)="description.set($any($event.target).value)"
+    ></textarea>
+
+    <button class="submit-btn" (click)="submit()">Toevoegen</button>
+  </div>
+</section>

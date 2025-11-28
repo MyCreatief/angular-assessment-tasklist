@@ -1,3 +1,3 @@
-#!/bin/sh
-# Tijdelijk uitgezet totdat Angular + Vitest is geïnstalleerd
-echo "Skipping tests for now (Angular not installed yet)"
+##!/bin/sh
+## Tijdelijk uitgezet totdat Angular + Vitest is geïnstalleerd
+#echo "Skipping tests for now (Angular not installed yet)"
