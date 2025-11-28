@@ -129,3 +129,19 @@ Ik heb de eerste indeling van het project neergezet. De structuur is bewust rust
 - **tasks** – voor alle onderdelen die met taken te maken hebben
 
 Deze indeling past goed bij de schaal van dit project en vormt een helder vertrekpunt voor de volgende stappen.
+
+## Update 4: Keuze voor private en readonly velden
+
+In dit project gebruik ik de standaard TypeScript-manier om interne velden aan te geven, namelijk met `private` en `readonly`.  
+Dit houdt de code duidelijk en goed leesbaar. Het sluit aan op hoe Angular zelf werkt en hoe de officiële documentatie het laat zien.  
+Angular vertrouwt op TypeScript voor dependency injection, testing en tooling. De gewone private velden passen daar het beste bij.
+
+JavaScript heeft ook een nieuwere vorm van echte runtime-private velden met een hekje ervoor, zoals `#tasks`.  
+Deze velden zijn volledig afgeschermd en kunnen van buitenaf niet worden benaderd.  
+Ze zijn handig in sommige grote monorepo’s met strikte interne regels, maar binnen Angular-services hebben ze nadelen.  
+Ze zijn moeilijker te debuggen en kunnen niet makkelijk worden getest of gemockt.  
+Daarnaast werken deze velden alleen wanneer de `target` in `tsconfig.json` is ingesteld op een moderne standaard zoals `ES2022`.  
+Oudere browsers en sommige omgevingen ondersteunen deze velden niet goed.
+
+Omdat leesbaarheid, voorspelbaarheid en testbaarheid belangrijk zijn in dit project, kies ik bewust voor `private` en `readonly`.  
+Dit past het beste bij Angular en zorgt ervoor dat de code begrijpelijk blijft voor iedereen die eraan werkt.
