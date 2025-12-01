@@ -3,7 +3,19 @@
 
   <div class="detail-card">
     @if (task; as task) {
-      <h1 class="detail-title">{{ task.title }}</h1>
+      <h2 class="detail-title">{{ task.title }}</h2>
+
+      <!--
+        Only administrators may delete tasks.
+        Editors can modify content but cannot remove tasks entirely.
+        This intentional restriction demonstrates role-based access control (RBAC)
+        on the frontend. In a real-world application, backend validation would also
+        enforce this rule, but here we show how Angular’s authorization layer
+        prevents restricted actions in the UI.
+      -->
+      @if (auth.hasRole(['admin'])) {
+        <button (click)="deleteTask()" class="delete-button">Verwijderen</button>
+      }
 
       @if (task.description) {
         <p class="detail-desc">{{ task.description }}</p>

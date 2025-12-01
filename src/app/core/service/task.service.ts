@@ -1,13 +1,13 @@
 import { Injectable, signal } from '@angular/core';
-import { Task } from './models/task.model';
+import { Task } from '../models/task.model';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
   private readonly storageKey = 'tasks';
   private readonly _tasks = signal<Task[]>([]);
 
-  // expose read-only
-  tasks = this._tasks.asReadonly();
+  // Expose read-only tasks
+  readonly tasks = this._tasks.asReadonly();
 
   /**
    * Initialize service state.
@@ -92,15 +92,11 @@ export class TaskService {
     return this._tasks().find((t) => t.id === id) ?? null;
   }
 
-  /** Used by tests */
-  getTaskById(id: string): Task | null {
-    return this.getTask(id);
-  }
-
-  /** Fake API loader (tests) */
-  async loadFakeApiData(): Promise<void> {
-    await new Promise((resolve) => setTimeout(resolve, 10));
-
+  /**
+   * Fake API loader (for tests, but no artificial delay)
+   * Deliberately synchronous, because tests should not depend on timers.
+   */
+  loadFakeApiData(): void {
     const fakeTasks: Task[] = [
       {
         id: crypto.randomUUID(),

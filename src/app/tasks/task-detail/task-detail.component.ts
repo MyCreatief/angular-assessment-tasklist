@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { TaskService } from '../../core/task.service';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { TaskService } from '../../core/service/task.service';
+import { AuthService } from '../../core/service/auth.service';
 
 @Component({
   selector: 'app-task-detail',
@@ -13,6 +14,19 @@ import { TaskService } from '../../core/task.service';
 export class TaskDetailComponent {
   private route = inject(ActivatedRoute);
   private taskService = inject(TaskService);
+  private router = inject(Router);
+  readonly auth = inject(AuthService);
 
-  task = this.taskService.getTask(this.route.snapshot.paramMap.get('id')!);
+  readonly id = this.route.snapshot.paramMap.get('id')!;
+
+  task = this.taskService.getTask(this.id);
+
+  deleteTask() {
+    if (!this.auth.hasRole(['editor', 'admin'])) {
+      return;
+    }
+
+    this.taskService.deleteTask(this.id);
+    this.router.navigate(['/tasks']);
+  }
 }
