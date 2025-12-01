@@ -1,17 +1,21 @@
 .app-shell {
   min-height: 100vh;
-  background: var(--color-background);
-  color: var(--color-text);
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(
+      to bottom,
+      var(--color-surface-soft),
+      var(--color-surface)
+  );
 }
 
 .app-main {
-  max-width: 72rem;
-  margin: 0 auto;
-  padding: var(--space-lg) var(--space-lg) var(--space-xl);
+  flex: 1 0 auto;
+  padding: 1.5rem 1rem 2rem;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   .app-main {
-    padding: var(--space-md);
+    padding: 2rem 1.5rem 2.5rem;
   }
 }

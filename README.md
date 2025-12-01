@@ -226,3 +226,8 @@ Deze update laat zien hoe ik werk met:
 - componentgedrag dat direct inspeelt op de rol
 - tests die op een nette manier meebewegen
 - een rustige, professionele codebase
+
+## Slot
+
+Tot slot: in echte projecten vraag ik vaker om reviewmomenten en feedback tijdens het bouwen.
+In dit assessment heb ik minder inline documentatie toegevoegd, omdat ik vind dat goed geschreven code zichzelf hoort uit te leggen. Zodra iets niet duidelijk of leesbaar is, is dat meestal een signaal om de structuur of naamgeving te verbeteren.
