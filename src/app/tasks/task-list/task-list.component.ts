@@ -1,8 +1,9 @@
 import { Component, inject, ChangeDetectionStrategy, signal } from '@angular/core';
-import { TaskService } from '../../core/task.service';
+import { TaskService } from '../../core/service/task.service';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { SearchBarComponent } from '../../shared/search-bar/search-bar.component';
+import { AuthService } from '../../core/service/auth.service';
 
 @Component({
   selector: 'app-task-list',
@@ -14,8 +15,8 @@ import { SearchBarComponent } from '../../shared/search-bar/search-bar.component
 })
 export class TaskListComponent {
   private readonly taskService = inject(TaskService);
+  readonly auth = inject(AuthService);
 
-  // zoekterm als signal
   searchQuery = signal('');
 
   onSearch(query: string) {
@@ -30,6 +31,12 @@ export class TaskListComponent {
     const regex = new RegExp(escaped, 'gi');
 
     return text.replace(regex, (match) => `<mark>${match}</mark>`);
+  }
+
+  deleteFromList(id: string, event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.taskService.deleteTask(id);
   }
 
   get taskList() {

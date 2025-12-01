@@ -1,0 +1,16 @@
+<div class="role-switcher">
+  <button class="role-button" (click)="toggleDropdown()">
+    {{ activeRole() | titlecase }}
+    <span class="arrow" [class.open]="dropdownOpen">▾</span>
+  </button>
+
+  @if (dropdownOpen) {
+    <ul class="dropdown">
+      @for (role of roles; track role) {
+        <li (click)="switchRole(role)" class="{{ activeRole() === role ? 'active' : '' }}">
+          {{ role | titlecase }}
+        </li>
+      }
+    </ul>
+  }
+</div>

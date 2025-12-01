@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { signal, runInInjectionContext, createEnvironmentInjector } from '@angular/core';
 import { TaskListComponent } from './task-list.component';
-import { TaskService } from '../../core/task.service';
+import { TaskService } from '../../core/service/task.service';
+import { AuthService } from '../../core/service/auth.service';
 import { Task } from '../../core/models/task.model';
 
 class MockTaskService {
@@ -16,6 +17,9 @@ class MockTaskService {
   ]);
 }
 
+// super minimal mock because the component never calls role() or hasRole()
+class MockAuthService {}
+
 describe('TaskListComponent', () => {
   let mockService: MockTaskService;
   let injector: ReturnType<typeof createEnvironmentInjector>;
@@ -23,8 +27,10 @@ describe('TaskListComponent', () => {
   beforeEach(() => {
     mockService = new MockTaskService();
 
-    // Maak een Angular DI injector
-    injector = createEnvironmentInjector([{ provide: TaskService, useValue: mockService }]);
+    injector = createEnvironmentInjector([
+      { provide: TaskService, useValue: mockService },
+      { provide: AuthService, useClass: MockAuthService },
+    ]);
   });
 
   function createComponent() {
@@ -42,5 +48,13 @@ describe('TaskListComponent', () => {
 
     expect(tasks.length).toBe(1);
     expect(tasks[0].title).toBe('Test task');
+  });
+
+  it('should highlight matching search terms', () => {
+    const component = createComponent();
+    component.onSearch('test');
+
+    const result = component.highlight('A test task');
+    expect(result).toContain('<mark>');
   });
 });

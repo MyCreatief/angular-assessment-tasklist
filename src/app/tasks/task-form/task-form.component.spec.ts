@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { createEnvironmentInjector, runInInjectionContext } from '@angular/core';
 import { TaskFormComponent } from './task-form.component';
-import { TaskService } from '../../core/task.service';
+import { TaskService } from '../../core/service/task.service';
 import { Router } from '@angular/router';
 
 class MockTaskService {
@@ -39,7 +39,7 @@ describe('TaskFormComponent (class only)', () => {
   it('should show error when title is empty', () => {
     const component = createComponent();
 
-    component.title.set(''); // SIGNAL
+    component.title.set('');
     component.submit();
 
     expect(component.showError()).toBe(true);
@@ -48,8 +48,8 @@ describe('TaskFormComponent (class only)', () => {
   it('should submit when title is filled', () => {
     const component = createComponent();
 
-    component.title.set('Test title'); // SIGNAL
-    component.description.set('Test desc'); // SIGNAL
+    component.title.set('Test title');
+    component.description.set('Test desc');
 
     component.submit();
 

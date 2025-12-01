@@ -1,21 +1,48 @@
-import { Component, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject, effect } from '@angular/core';
+import { Router, RouterOutlet, RouterStateSnapshot } from '@angular/router';
+import { HeaderComponent } from './layout/header/header.component';
 import { TaskListComponent } from './tasks/task-list/task-list.component';
-import { TaskService } from './core/task.service';
+
+import { AuthService } from './core/service/auth.service';
+import { TaskService } from './core/service/task.service';
+import { canAccessRoute } from './core/guards/role.guard';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, TaskListComponent],
+  imports: [RouterOutlet, TaskListComponent, HeaderComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  title = 'angular-assessment-tasklist';
-
-  private taskService = inject(TaskService);
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly taskService = inject(TaskService);
 
   constructor() {
+    // Start application data
     this.taskService.init({ seed: true });
+
+    // Listen to role changes and auto-redirect if needed
+    effect(() => {
+      const currentRole = this.auth.role();
+      const tree = this.router.routerState.snapshot as RouterStateSnapshot;
+      const activeRoute = this.getDeepest(tree.root);
+
+      const allowed = canAccessRoute(activeRoute, currentRole);
+
+      if (!allowed) {
+        this.router.navigate(['/not-allowed']);
+      }
+    });
+  }
+
+  /** Find deepest child route */
+  private getDeepest(route: any): any {
+    while (route.firstChild) {
+      route = route.firstChild;
+    }
+    return route;
   }
 }

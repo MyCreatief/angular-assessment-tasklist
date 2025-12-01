@@ -1,24 +1,32 @@
 <section class="task-list-page">
-
   <header class="page-header">
     <h1 class="page-title">Takenlijst</h1>
-    <a routerLink="/tasks/new" class="page-header__action">Nieuwe taak</a>
+
+    @if (auth.hasRole(['editor', 'admin'])) {
+      <a routerLink="/tasks/new" class="page-header__action">Nieuwe taak</a>
+    }
   </header>
 
   <app-search-bar (search)="onSearch($event)"></app-search-bar>
   <div class="task-list">
     @for (task of taskList; track task.id) {
-    <a class="task-item" [routerLink]="['/tasks', task.id]">
-      <div class="title" [innerHTML]="highlight(task.title)"></div>
+      <div class="task-item">
+        <a class="task-link" [routerLink]="['/tasks', task.id]">
+          <div class="title" [innerHTML]="highlight(task.title)"></div>
 
-      @if (task.description) {
-    <div class="desc" [innerHTML]="highlight(task.description)"></div>
-    }
+          @if (task.description) {
+            <div class="desc" [innerHTML]="highlight(task.description)"></div>
+          }
 
-    <div class="meta">
-    {{ task.createdAt | date : 'mediumDate' }}
-    </div>
-  </a>
+          <div class="meta">
+            {{ task.createdAt | date: 'mediumDate' }}
+          </div>
+        </a>
+
+        @if (auth.hasRole(['admin'])) {
+          <button class="delete-btn" (click)="deleteFromList(task.id, $event)">Verwijder</button>
+        }
+      </div>
     }
   </div>
 </section>

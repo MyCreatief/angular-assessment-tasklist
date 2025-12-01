@@ -1,20 +1,39 @@
 import { Routes } from '@angular/router';
-import { TaskListComponent } from './tasks/task-list/task-list.component';
-import { TaskFormComponent } from './tasks/task-form/task-form.component';
-import { TaskDetailComponent } from './tasks/task-detail/task-detail.component';
+import { RoleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    component: TaskListComponent,
+    redirectTo: 'tasks',
     pathMatch: 'full',
   },
+
   {
     path: 'tasks',
     children: [
-      { path: '', component: TaskListComponent },
-      { path: 'new', component: TaskFormComponent },
-      { path: ':id', component: TaskDetailComponent },
+      {
+        path: '',
+        loadComponent: () =>
+          import('./tasks/task-list/task-list.component').then((m) => m.TaskListComponent),
+      },
+      {
+        path: 'new',
+        canActivate: [RoleGuard],
+        data: { roles: ['admin', 'editor'] },
+        loadComponent: () =>
+          import('./tasks/task-form/task-form.component').then((m) => m.TaskFormComponent),
+      },
+      {
+        path: ':id',
+        loadComponent: () =>
+          import('./tasks/task-detail/task-detail.component').then((m) => m.TaskDetailComponent),
+      },
     ],
+  },
+
+  // fallback
+  {
+    path: '**',
+    redirectTo: 'tasks',
   },
 ];

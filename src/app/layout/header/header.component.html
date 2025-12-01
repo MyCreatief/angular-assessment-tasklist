@@ -1,0 +1,34 @@
+<header class="app-header">
+  <div class="app-header__inner">
+    <div class="app-header__brand">
+      <div class="app-header__logo">✓</div>
+      <div class="app-header__brand-text">
+        <span class="app-header__title">Tasklist</span>
+        <span class="app-header__subtitle">Angular assessment</span>
+      </div>
+    </div>
+
+    <nav class="app-header__nav">
+      <a
+        routerLink="/tasks"
+        routerLinkActive="app-header__nav-link--active"
+        class="app-header__nav-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Taken
+      </a>
+
+      @if (auth.hasRole(['editor', 'admin'])) {
+        <a
+          routerLink="/tasks/new"
+          routerLinkActive="app-header__nav-link--active"
+          class="app-header__nav-link"
+        >
+          Nieuwe taak
+        </a>
+      }
+    </nav>
+
+    <div class="app-header__meta">User role: <app-role-switcher /></div>
+  </div>
+</header>

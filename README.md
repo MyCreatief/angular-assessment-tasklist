@@ -145,3 +145,84 @@ Oudere browsers en sommige omgevingen ondersteunen deze velden niet goed.
 
 Omdat leesbaarheid, voorspelbaarheid en testbaarheid belangrijk zijn in dit project, kies ik bewust voor `private` en `readonly`.  
 Dit past het beste bij Angular en zorgt ervoor dat de code begrijpelijk blijft voor iedereen die eraan werkt.
+
+# Update 5: Rollen, autorisatie en kwaliteit van testen
+
+In deze fase is de applicatie uitgebreid met een lichte vorm van autorisatie. Dit is bewust klein gehouden, omdat volledige authenticatie niet past binnen de opdracht en normaal door een backend wordt afgehandeld. Toch is het waardevol om te laten zien hoe Angular omgaat met gebruikersrollen, toegangscontrole en componentgedrag dat verandert op basis van de actieve gebruiker.
+
+## Waarom rollen?
+
+De opdracht vroeg niet expliciet om meerdere gebruikersrechten, maar autorisatie komt in vrijwel elk echt project voor. Daarom zijn er drie rollen geïntroduceerd:
+
+- **viewer** – mag taken bekijken
+- **editor** – mag taken toevoegen en aanpassen
+- **admin** – mag alles, inclusief verwijderen
+
+Tijdens refinement bleek dat editor en admin bijna dezelfde rechten hadden. Om het verschil concreet en betekenisvol te houden is verwijderen bewust exclusief voor de admin gemaakt. Dat maakt de functionaliteit helder én testbaar.
+
+## Role switcher
+
+Om de autorisatie zichtbaar te maken is een eenvoudige role switcher toegevoegd. De switcher:
+
+- toont alleen de beschikbare rollen
+- werkt met een compacte dropdown die de layout niet verstoort
+- gebruikt Angular signals voor directe updates
+- bewaart de gekozen rol in localStorage
+
+Hierdoor blijft de rol behouden na een refresh en voelt de applicatie alsof er echt wordt ingelogd, zonder een volledige authenticatieflow.
+
+## Autorisatie in de interface
+
+De interface reageert direct op de actieve rol:
+
+- De knop “Nieuwe taak” is verborgen voor de viewer.
+- De knop “Verwijderen” wordt alleen getoond aan admins.
+- Routes die niet zijn toegestaan worden afgebroken via de guard.
+- Componenten controleren zelf toegangsrechten waar dat relevant is.
+
+De autorisatie zit dus zowel in de routing als in de UI.
+
+## Router en guards
+
+Er is een kleine guard toegevoegd die controleert of de gebruiker voldoende rechten heeft voor een route.  
+Een viewer kan bijvoorbeeld niet naar `/tasks/new`.
+
+Daarnaast is de routing opgefrist zodat dubbele paden en onlogische structuren zijn verwijderd.
+
+## Aanpassingen in unit testing
+
+Het toevoegen van autorisatie had directe impact op de tests.  
+Omdat Angular 17 signal-first is en een moderne dependency injection-aanpak gebruikt, moest de mocking worden aangepast.
+
+Daarom zijn:
+
+- `AuthService` gemockt in de relevante tests
+- `Router` vervangen door een eenvoudige mock met alleen `navigate()`
+- `ActivatedRoute` nagebouwd met een dynamische `paramMap`
+- asserts bijgewerkt om te passen bij de nieuwe rolverdeling
+- overbodige tests opgeschoond
+
+De tests blijven klein en gericht op gedrag, niet op implementatiedetails.
+
+## Waarom deze keuzes passen bij Angular 17
+
+Angular 17 werkt signal-first. Dat betekent dat:
+
+- UI automatisch reageert op rolwijzigingen
+- state-opslag eenvoudiger en efficiënter is
+- er geen zware state management libraries nodig zijn
+- localStorage-sync licht en betrouwbaar blijft
+- tests voorspelbaar blijven
+
+Deze keuzes passen daardoor goed bij de moderne Angular architectuur.
+
+## Waar deze update voor staat
+
+Deze update laat zien hoe ik werk met:
+
+- lichte, begrijpelijke autorisatie
+- UX-keuzes die logisch voelen
+- state-beheer dat stabiel blijft
+- componentgedrag dat direct inspeelt op de rol
+- tests die op een nette manier meebewegen
+- een rustige, professionele codebase

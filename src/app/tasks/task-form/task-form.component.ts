@@ -1,5 +1,5 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
-import { TaskService } from '../../core/task.service';
+import { TaskService } from '../../core/service/task.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
