@@ -231,3 +231,6 @@ Deze update laat zien hoe ik werk met:
 
 Tot slot: in echte projecten vraag ik vaker om reviewmomenten en feedback tijdens het bouwen.
 In dit assessment heb ik minder inline documentatie toegevoegd, omdat ik vind dat goed geschreven code zichzelf hoort uit te leggen. Zodra iets niet duidelijk of leesbaar is, is dat meestal een signaal om de structuur of naamgeving te verbeteren.
+
+## P.S. Slot
+Tot slot nog iets over de zoekfunctionaliteit. De opdracht spreekt over het highlighten van zoekmatches, maar in een echte situatie zou ik willen verduidelijken wat hiermee precies wordt bedoeld. Verwacht iemand dat de lijst wordt gefilterd, gesorteerd, of alleen gemarkeerd? Dat verschil heeft impact op zowel UX als implementatie. In een echt project zou ik dit altijd eerst uitvragen, zodat er geen aannames worden gedaan en er alleen wordt gebouwd wat daadwerkelijk nodig is.
