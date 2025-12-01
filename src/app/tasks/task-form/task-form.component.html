@@ -10,7 +10,9 @@
       (input)="title.set($any($event.target).value)"
     />
 
-    <p class="error" *ngIf="showError()">Titel is verplicht</p>
+    @if (showError) {
+      <p class="error">Titel is verplicht</p>
+    }
 
     <label class="form-label">Beschrijving</label>
     <textarea
