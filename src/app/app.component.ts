@@ -6,11 +6,12 @@ import { TaskListComponent } from './tasks/task-list/task-list.component';
 import { AuthService } from './core/service/auth.service';
 import { TaskService } from './core/service/task.service';
 import { canAccessRoute } from './core/guards/role.guard';
+import { FooterComponent } from './layout/footer/footer.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, TaskListComponent, HeaderComponent],
+  imports: [RouterOutlet, TaskListComponent, HeaderComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
